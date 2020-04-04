@@ -67,6 +67,11 @@ jobs:
           mkdir -p /tmp/minio-config/certs/
           cp LessPaper.Shared.MinIO.IntegrationTest/TestCertificates/* /tmp/minio-config/certs/
           /tmp/minio -C /tmp/minio-config server /tmp/fs/ &
+    - name: Install certificate
+      run: |
+          sudo apt-get install ca-certificates -y
+          sudo cp LessPaper.Shared.MinIO.IntegrationTest/TestCertificates/*.crt /usr/local/share/ca-certificates/
+          sudo update-ca-certificates
     - name: Create lesspaper bucket
       run: |
           wget -O /tmp/mc  https://dl.min.io/client/mc/release/linux-amd64/mc
