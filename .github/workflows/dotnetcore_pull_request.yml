@@ -42,16 +42,37 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v2      
-    - name: Define runtime for test   
+    - name: Define runtime for the integration test   
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101      
-    - uses: getong/rabbitmq-action@v1.2
-      with:
-        rabbitmq version: '3.8.2-management-alpine'
-        host port: 5672
-        rabbitmq user: 'guest'
-        rabbitmq password: 'guest'
+    - name: Start minio server
+      env:
+        MINT_MODE: full
+        SERVER_ENDPOINT: 127.0.0.1:9000
+        ACCESS_KEY: minioadmin
+        SECRET_KEY: minioadmin
+        ENABLE_HTTPS: 1
+        MINIO_ACCESS_KEY: minioadmin
+        MINIO_SECRET_KEY: minioadmin
+        SSL_CERT_FILE: /tmp/minio-config/certs/public.crt
+      run: |
+          wget -O /tmp/minio https://dl.min.io/server/minio/release/linux-amd64/minio
+          chmod +x /tmp/minio
+          mkdir -p /tmp/minio-config/certs/
+          cp LessPaper.Shared.MinIO.IntegrationTest/TestCertificates/* /tmp/minio-config/certs/
+          /tmp/minio -C /tmp/minio-config server /tmp/fs/ &
+    - name: Install certificate
+      run: |
+          sudo apt-get install ca-certificates -y
+          sudo cp LessPaper.Shared.MinIO.IntegrationTest/TestCertificates/*.crt /usr/local/share/ca-certificates/
+          sudo update-ca-certificates
+    - name: Create lesspaper bucket
+      run: |
+          wget -O /tmp/mc  https://dl.min.io/client/mc/release/linux-amd64/mc
+          chmod +x /tmp/mc
+          /tmp/mc config host add minio https://127.0.0.1:9000 minioadmin minioadmin
+          /tmp/mc mb minio/lesspaper
     - name: Run tests
       run: |  
         cd LessPaper.Shared.MinIO.IntegrationTest
