@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>LessPaper</Authors>
     <PackageProjectUrl>https://github.com/LessPaperWork/LessPaper.Shared.MinIO</PackageProjectUrl>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
