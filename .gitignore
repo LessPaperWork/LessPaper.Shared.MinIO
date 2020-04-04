@@ -1,0 +1,22 @@
+## Static files
+*
+!/**/
+!.github/workflows/*.yml
+
+!.gitignore
+!LICENSE
+!README.md
+/**/Debug
+/**/Release
+
+## Add specific files
+!LessPaper.Shared.MinIO.sln.DotSettings
+!LessPaper.Shared.MinIO.sln
+!LessPaper.Shared.MinIO/LessPaper.Shared.MinIO.csproj
+!LessPaper.Shared.MinIO.UnitTest/LessPaper.Shared.MinIO.UnitTest.csproj
+!LessPaper.Shared.MinIO.IntegrationTest/LessPaper.Shared.MinIO.IntegrationTest.csproj
+!LessPaper.Shared.MinIO.IntegrationTest/TestCertificates/private.key
+!LessPaper.Shared.MinIO.IntegrationTest/TestCertificates/public.crt
+
+!/**/*.cs
+
